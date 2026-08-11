@@ -1,5 +1,9 @@
+import readline from 'readline';
+
 import { CONFIGURACOES, SIMBOLOS } from "../config/config.js";
 import { cobra } from "./cobra.js";
+import { comida } from "./comida.js";
+import { inimigos } from "./inimigos.js";
 
 function iniciar(dificuldade) {
     console.log(dificuldade);
@@ -16,6 +20,10 @@ function desenhar() {
         for (var x = -1; x <= CONFIGURACOES.largura; x++) {
             if (x === -1 || x === CONFIGURACOES.largura || y === -1 || y === CONFIGURACOES.altura) {
                 linha += SIMBOLOS.parede;
+            } else if (comida.estaNaPosicao(x, y)) {
+                linha += SIMBOLOS.comida;
+            } else if (inimigos.estaNaPosicao(x, y)) {
+                linha += SIMBOLOS.inimigo;
             } else {
                 var desenhouCobra = false;
                 for (var i = 0; i < cobra.partes.length; i++) {
@@ -35,6 +43,20 @@ function desenhar() {
 
     console.clear();
     process.stdout.write("\x1b[H" + tela);
+}
+
+function configurarTeclado() {
+    readline.emitKeypressEvents(process.stdin);
+    readline.stdin.setRawMode(true);
+    readline.stdin.resume();
+
+    readline.stdin.on("keypress", (texto, tecla) => {
+        if (tecla.name === "w") cobra.alterarDirecao("w");
+        if (tecla.name === "a") cobra.alterarDirecao("a");
+        if (tecla.name === "s") cobra.alterarDirecao("s");
+        if (tecla.name === "d") cobra.alterarDirecao("d");
+        if (tecla.name === "q") jogo.gameOver = true;
+    })
 }
 
 export var jogo = {

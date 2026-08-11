@@ -12,7 +12,7 @@ function mostrarMenu() {
     console.log("3 - Difícil");
 
     var opcao = leia.questionInt("Escolha uma opcao: ");
-    var difilculdade = DIFICULDADES[opcao]
+    var difilculdade = DIFICULDADES[opcao];
 
     if (difilculdade === undefined) {
         console.log("Opção Inválida");
