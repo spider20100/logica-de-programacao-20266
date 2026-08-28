@@ -5,11 +5,11 @@ var LINHAS = 8;
 var COLUNAS = 8;
 var BOMBAS = 10;
 var MODO = 1;
-var LIMITE_TEMPO_SEGUNDOS = 120; // usado no Modo 4 (Contra o Tempo)
+var LIMITE_TEMPO_SEGUNDOS = 120; 
 
 var ARQUIVO_RANKING = './ranking.json';
 
-// Carrega o ranking salvo em disco (ou cria vazio se não existir)
+// carrega o Histório de partidas salvo no arquivo JSON
 function carregarRanking() {
   try {
     if (fs.existsSync(ARQUIVO_RANKING)) {
@@ -22,7 +22,7 @@ function carregarRanking() {
   return [];
 }
 
-// Salva o ranking atualizado em disco
+//
 function salvarRanking(ranking) {
   try {
     fs.writeFileSync(ARQUIVO_RANKING, JSON.stringify(ranking, null, 2), 'utf-8');
@@ -31,7 +31,7 @@ function salvarRanking(ranking) {
   }
 }
 
-// Adiciona um novo resultado ao ranking e persiste no arquivo
+
 function registrarResultado(nome, vitoria, tempoSegundos, dificuldade, modo) {
   var ranking = carregarRanking();
   var registro = {
@@ -46,7 +46,7 @@ function registrarResultado(nome, vitoria, tempoSegundos, dificuldade, modo) {
   salvarRanking(ranking);
 }
 
-// Exibe o histórico de partidas salvo em disco
+
 function exibirRanking() {
   var ranking = carregarRanking();
   if (ranking.length === 0) {
@@ -74,7 +74,7 @@ function exibirRanking() {
   }
 }
 
-// Configura a dificuldade escolhida
+// Gustavo: ESTRUTURAS CONDICIONAIS  
 function escolherDificuldade() {
   console.clear();
   console.log('--- ESCOLHA A DIFICULDADE ---');
@@ -82,7 +82,7 @@ function escolherDificuldade() {
   console.log('2. Médio (8x8 - 10 bombas)');
   console.log('3. Difícil (10x10 - 20 bombas)');
 
-  var opcao = readline.questionInt('Escolha uma opção (1-3): ');
+  var opcao = readline.questionInt('Escolha uma opcao (1-3): ');
 
   if (opcao === 1) {
     LINHAS = 6;
@@ -107,7 +107,7 @@ function escolherDificuldade() {
   }
 }
 
-// Configura o modo de jogo
+
 function escolherModoJogo() {
   console.log('--- ESCOLHA O MODO ---');
   console.log('1. Normal (bombas fixas em qualquer lugar)');
@@ -115,7 +115,7 @@ function escolherModoJogo() {
   console.log('3. Área segura (a célula clicada e seus vizinhos nunca são bomba)');
   console.log('4. Contra o tempo (vença em até ' + LIMITE_TEMPO_SEGUNDOS + 's)');
   console.log('5. Hardcore (sem revelação em cascata)');
-  var opcao = readline.questionInt('Escolha uma opção (1-5): ');
+  var opcao = readline.questionInt('Escolha uma opcao (1-5): ');
 
   if (opcao >= 1 && opcao <= 5) {
     MODO = opcao;
@@ -137,7 +137,7 @@ function escolherModoJogo() {
   return nomeModo;
 }
 
-// Cria o tabuleiro do jogo
+// Gustavo: ESTRUTURA DE DADOS/ matriz
 function criarTabuleiro(valor) {
   var tabuleiro = [];
   for (var i = 0; i < LINHAS; i++) {
@@ -150,14 +150,14 @@ function criarTabuleiro(valor) {
   return tabuleiro;
 }
 
-// Verifica se uma posição está na área protegida (usada no Modo 3)
+
 function estaNaAreaSegura(linha, coluna, linhaInicial, colunaInicial) {
   var diferencaLinha = Math.abs(linha - linhaInicial);
   var diferencaColuna = Math.abs(coluna - colunaInicial);
   return diferencaLinha <= 1 && diferencaColuna <= 1;
 }
 
-// Posiciona as bombas no tabuleiro (respeitando a primeira jogada conforme o modo)
+// Victor: ESTRUTURA DE REPETIÇÃO
 function posicionarBombas(tabuleiro, linhaInicial, colunaInicial) {
   var bombasPossiveis = LINHAS * COLUNAS - 1;
   if (MODO === 3) {
@@ -185,7 +185,7 @@ function posicionarBombas(tabuleiro, linhaInicial, colunaInicial) {
   }
 }
 
-// Conta quantas bombas existem ao redor de uma célula
+
 function contarBombasVizinhas(tabuleiro, linha, coluna) {
   var contador = 0;
   for (var i = -1; i <= 1; i++) {
@@ -205,7 +205,7 @@ function contarBombasVizinhas(tabuleiro, linha, coluna) {
   return contador;
 }
 
-// Imprime o tabuleiro visível no terminal
+
 function exibirTabuleiro(tabuleiroVisivel) {
   console.clear();
   if (MODO === 4) {
@@ -229,7 +229,7 @@ function exibirTabuleiro(tabuleiroVisivel) {
   }
 }
 
-// Revela a célula e seus vizinhos (a cascata é desativada no Modo 5 - Hardcore)
+
 function revelarCelula(tabuleiroReal, tabuleiroVisivel, linha, coluna) {
   if (
     linha < 0 || linha >= LINHAS ||
@@ -257,7 +257,7 @@ function revelarCelula(tabuleiroReal, tabuleiroVisivel, linha, coluna) {
   }
 }
 
-// Verifica condição de vitória
+
 function verificarVitoria(tabuleiroVisivel, tabuleiroReal) {
   for (var l = 0; l < LINHAS; l++) {
     for (var c = 0; c < COLUNAS; c++) {
@@ -271,12 +271,12 @@ function verificarVitoria(tabuleiroVisivel, tabuleiroReal) {
   return true;
 }
 
-// Função principal
+
 function jogar() {
   console.log('=== BEM-VINDO AO CAMPO MINADO ===');
   console.log('1. Jogar');
   console.log('2. Ver histórico de partidas');
-  var opcaoMenu = readline.questionInt('Escolha uma opção (1-2): ');
+  var opcaoMenu = readline.questionInt('Escolha uma opcao (1-2): ');
 
   if (opcaoMenu === 2) {
     exibirRanking();

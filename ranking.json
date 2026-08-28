@@ -38,5 +38,13 @@
     "dificuldade": "Fácil",
     "modo": "Primeira jogada segura",
     "data": "25/08/2026, 21:04:25"
+  },
+  {
+    "nome": "h",
+    "vitoria": false,
+    "tempoSegundos": 24,
+    "dificuldade": "Difícil",
+    "modo": "Seguro na primeira jogada",
+    "data": "2026-08-27T22:14:08.844Z"
   }
 ]
